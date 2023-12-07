@@ -1,10 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type chordSettingsType = {
-  string: boolean
+  keys: [string, boolean][],
+  chords: [string, boolean][],
 };
 
 
@@ -15,55 +16,92 @@ type chordListType = {
 
 export default function Home() {
   
-  const options = [ "a", "b", "c", "d", "e", "f", "g", "a♭", "b♭", "d♭", "e♭", "g♭", "maj7", "dom7", "min7", "dim7", "halfdim7", ]
-  const [ chordState, setChordState ] = useState<{[key: string]: boolean}[]>(
-    options.map((entry) => ({[entry]: false}))
+  const keys = [ "c", "d", "d♭", "e", "e♭", "f", "g", "g♭", "a", "a♭", "b", "b♭", ]
+  const chords =[ "maj7", "7", "m7", "dim7", "dim-7", ]
+  const [ chordState, setChordState ] = useState<chordSettingsType>(
+    {
+      keys: keys.map((entry) => ([entry,false])),
+      chords: chords.map((entry) => ([entry,false]))
+    }
   );
 
-  const [ chordList, setChordlist ] = useState<chordListType>({
-    keys: [],
-    chords: []
-  });
+  const [ chordList, setChordList ] = useState<string[]>([]);
 
-  function addKey(key: string) {
-    for (var i = 0; i < chordList.keys.length; i++) {
-      if (chordList.keys[i] === key) {
-        return;
+  
+  function updateChordList() {
+    var updatedChords = [];
+    for (var i=0; i < chordState.chords.length; i++) {
+      for (var j = 0; j < chordState.keys.length; j++) {
+        if (chordState.keys[j][1]) {
+          var newChord = chordState.keys[j][0];
+          if (chordState.chords[i][1]) {
+            newChord += chordState.chords[i][0];
+            updatedChords.push(newChord)
+          }
+          
+        }        
       }
     }
-    setChordlist({
-      ...chordList,
-      keys: [
-        ...chordList.keys,
-        key
-      ]
-    })
+    setChordList(updatedChords);
   }
 
-  function handleClick (event: React.ChangeEvent, position: number) {
-    const updatedChordState : {[key: string]: boolean}[] = chordState.map((item, index) =>
-      ({[Object.keys(item)[0]]: index === position ? !Object.values(item)[0] : Object.values(item)[0]})
+  function handleClickKeys (event: React.ChangeEvent, position: number) {
+    const updatedChordState : [string, boolean][] = chordState.keys.map((item, index) =>
+      [item[0], index === position ? !item[1] : item[1]]
     );
 
-    setChordState(updatedChordState);
-    console.log(chordState);
+    setChordState({
+      ...chordState,
+      keys: updatedChordState,    
+    });
+
+    updateChordList();
+  }
+
+  function handleClickChords (event: React.ChangeEvent, position: number) {
+    const updatedChordState : [string, boolean][] = chordState.chords.map((item, index) => 
+      [item[0], index === position ? !item[1] : item[1]]
+    );
+
+    setChordState({
+      ...chordState,
+      chords: updatedChordState,
+    })
+
+    updateChordList();
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>Chords</div>
       <div>Chord trainer</div>      
-        {chordState.map((entry, index) => {
-          var label = Object.keys(entry)[0];
-          var isChecked = Object.values(entry)[0];
+      <div>{chordList}</div>
+      <div>
+        {chordState.keys.map((entry, index) => {
+          var label = entry[0];
+          var isChecked = entry[1];
           return (
           <div key={index} >
-          <label>{label}</label>
-          <input name={label} type="checkbox" onChange={(e) => handleClick(e, index)} checked={isChecked} />
+          <label>{label[0].toUpperCase() + label.slice(1)}</label>
+          <input name={label} type="checkbox" onChange={(e) => handleClickKeys(e, index)} checked={isChecked} />
           </div>
           );
           })
-        }        
+        }
+      </div>
+      <div>
+        {chordState.chords.map((entry, index) => {
+          var label = entry[0];
+          var isChecked = entry[1];
+          return (
+          <div key={index} >
+          <label>{label}</label>
+          <input name={label} type="checkbox" onChange={(e) => handleClickChords(e, index)} checked={isChecked} />
+          </div>
+          );
+          })
+        }
+      </div>                
     </main>
   )
 }
