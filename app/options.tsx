@@ -18,7 +18,7 @@ type optionProps = {
 export default function Options(props: optionProps) {  
 
   return (
-    <div className="bg-indigo-800 text-white w-full pb-12">
+    <div className="bg-blue-800 text-white w-full pb-12">
       <div className="flex flex-col">
         <div className="flex flex-row justify-center">
           {props.chordState.keys.map((entry, index) => {
