@@ -142,7 +142,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="flex flex-row w-screen pt-24 p-12 justify-center text-white text-7xl bg-teal-800">Chord Trainer</div>
-      <div className="text-9xl h-1">{currentChord}</div>
+      <div className="flex flex-row p-12 text-9xl h-1">{currentChord}</div>
       <Option
         chordState={chordState} 
         startChords={startChords} 
