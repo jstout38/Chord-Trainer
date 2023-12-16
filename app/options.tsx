@@ -20,7 +20,7 @@ export default function Options(props: optionProps) {
   return (
     <div className="bg-blue-800 text-white w-full pb-12">
       <div className="flex flex-col">
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-center w-screen">
           {props.chordState.keys.map((entry, index) => {
             var label = entry[0];
             var isChecked = entry[1];
