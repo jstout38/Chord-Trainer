@@ -3,6 +3,13 @@
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react';
 import Option from './options';
+import { Roboto } from 'next/font/google';
+
+const raleway = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+})
+
 
 export type chordSettingsType = {
   keys: [string, boolean][],
@@ -140,9 +147,9 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <div className="flex flex-row w-screen text-white pt-24 p-12 justify-center text-4xl lg:text-7xl bg-blue-800">Chord Trainer</div>
-      <div className="flex flex-row w-screen flex-grow items-center justify-center bg-orange-200 text-9xl h-1">{currentChord}</div>
+    <main className={"flex h-screen flex-col items-center justify-between " + raleway.className}>
+      <div className="flex flex-row w-screen text-white pt-6 p-2 justify-center text-4xl lg:text-7xl bg-blue-800">Chord Trainer</div>
+      <div className="flex flex-1 flex-row w-screen flex-grow items-center justify-center bg-orange-100 text-7xl lg:text-9xl h-1">{currentChord}</div>
       <Option
         chordState={chordState} 
         startChords={startChords} 
