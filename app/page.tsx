@@ -147,7 +147,7 @@ export default function Home() {
   }
 
   return (
-    <main className={"flex h-[90vh] md:h-screen flex-col items-center justify-between " + raleway.className}>
+    <main className={"flex h-[85vh] sm:h-screen flex-col items-center justify-between " + raleway.className}>
       <div className="flex flex-row w-screen text-white pt-6 p-2 justify-center text-4xl lg:text-7xl bg-blue-800">Chord Trainer</div>
       <div className="flex flex-row w-screen flex-grow items-center justify-center bg-orange-100 text-7xl lg:text-9xl h-1">{currentChord}</div>
       <Option
